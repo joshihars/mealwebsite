@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .navbar{
+            text-align: center;
+            background-color: blue;
+            height: 70px;
+            margin-top: 15px;
+        }
+        nav a{
+            color: white;
+            padding-left: 40px;
+            font-size: 40px;
+            text-decoration: none;
+            padding-top: 15px;
+        }
+      #wall{
+          display: grid;
+          grid-template-columns: repeat(4,20%);
+          grid-gap:5%;
+          height: 200px;
+          width: 300px;
+      }
+      img{
+          width: 30%;
+          height: 150px;
+      }
+    </style>
+</head>
+<body>
+    <div class ="navbar">
+       <nav>
+           <a href="#">Login</a>
+           <a href="#">Signup</a>
+           <a onclick="myFunction()" href="#">Menu</a>
+       </nav>
+       <div id="wall"></div>
+    </div>
+
+</body>
+</html>
+
+<script>
+    function myFunction(){
+
+        let url = "https://www.themealdb.com/api/json/v1/1/categories.php"
+        let wall = document.getElementById("wall");
+
+        async function getFood(){
+            const response = await fetch(url);
+
+            const collected_data = await response.json();
+            console.log("collected_data:",collected_data),
+
+            appendProducts(collected_data);
+        }
+
+        function appendProducts(foods){
+            foods.forEach(function(food){
+                let main = document.createElement("div");
+
+                let id = document.createElement("p");
+                id.textContent = food.strCategory;
+
+                let img = document.createElement("img");
+                img.src = food.strCategoryThumb;
+
+                let desc = document.createElement("p");
+                desc.textContent = food.strCategoryDescription;
+
+                main.append(id,img,desc);
+                wall.append(main);
+            });
+        }
+        getFood();
+    }
+</script>
